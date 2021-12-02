@@ -1,0 +1,23 @@
+{
+  "name": "patientor-backend",
+  "version": "1.0.0",
+  "description": "Full Stack Open part 9 exercises",
+  "main": "index.js",
+  "scripts": {
+    "tsc": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/calslips/patientor-backend.git"
+  },
+  "author": "Caleb Phillips",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/calslips/patientor-backend/issues"
+  },
+  "homepage": "https://github.com/calslips/patientor-backend#readme",
+  "devDependencies": {
+    "typescript": "^4.5.2"
+  }
+}
