@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import diagnosesRouter from './routes/diagnoses';
 
 const app = express();
 
@@ -15,6 +16,8 @@ app.get('/api/ping', (_req, res) => {
   console.log('ping in action');
   res.send('pong');
 });
+
+app.use('/api/diagnoses', diagnosesRouter);
 
 const PORT = 3001;
 
