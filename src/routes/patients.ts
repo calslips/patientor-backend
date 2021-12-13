@@ -6,7 +6,7 @@ import validateNewPatient from '../utils';
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-  res.send(patientService.getNonSensitivePatientData());
+  res.send(patientService.getPublicPatientData());
 });
 
 router.post('/', (req, res) => {
@@ -21,6 +21,11 @@ router.post('/', (req, res) => {
     }
     res.status(400).send(errorMessage);
   }
+});
+
+router.get('/:id', (req, res) => {
+  const id = req.params.id;
+  res.send(patientService.getSinglePatient(id));
 });
 
 export default router;

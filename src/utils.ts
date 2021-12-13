@@ -57,7 +57,8 @@ const validateNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: pati
     dateOfBirth: parseDateOfBirth(dateOfBirth),
     ssn: parseSsn(ssn),
     gender: parseGender(gender),
-    occupation: parseOccupation(occupation)
+    occupation: parseOccupation(occupation),
+    entries: []
   };
   return newPatientData;
 };
