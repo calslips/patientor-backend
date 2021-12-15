@@ -35,3 +35,28 @@ export type patientInputs = {
 export type NewPatient = Omit<Patient, 'id'>;
 
 export type PublicPatient = Omit<Patient, 'ssn' | 'entries'>;
+
+interface BaseEntry {
+  id: string;
+  description: string;
+  date: string;
+  specialist: string;
+  diagnosisCode?: Array<Diagnosis['code']>;
+}
+
+export enum HealthCheckRating {
+  'Healthy' = 0,
+  'LowRisk' = 1,
+  'HighRisk' = 2,
+  'CriticalRisk' = 3
+}
+
+interface HealthCheckEntry extends BaseEntry {
+  type: 'HealthCheck';
+  healthCheckRating: HealthCheckRating;
+}
+
+export type Entry =
+  | HospitalEntry
+  | OccupationalHealthcareEntry
+  | HealthCheckEntry;
