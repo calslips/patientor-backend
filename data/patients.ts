@@ -1,4 +1,4 @@
-import { Patient, Gender } from '../src/types';
+import { Patient, Gender, Entry } from '../src/types';
 import validateNewPatient from '../src/utils';
 
 const data = [
@@ -116,6 +116,10 @@ const data = [
 const patients: Patient[] = data.map(singlePatient => {
     const patient = validateNewPatient(singlePatient) as Patient;
     patient.id = singlePatient.id;
+    singlePatient.entries.forEach(entry => {
+        const entryCopy: Entry = JSON.parse(JSON.stringify(entry));
+        patient.entries.push(entryCopy);
+    })
     return patient;
 });
 
