@@ -1,4 +1,15 @@
-import { NewPatient, Gender, patientInputs } from './types';
+import {
+  NewPatient,
+  Gender,
+  patientInputs,
+  entryInputs,
+  NewEntry,
+  Discharge,
+  HealthCheckRating,
+  HospitalEntry,
+  OccupationalHealthcareEntry,
+  HealthCheckEntry
+} from './types';
 
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
@@ -15,7 +26,7 @@ const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
 };
 
-const parseDateOfBirth = (date: unknown): string => {
+const parseDate = (date: unknown): string => {
   if (!date || !isString(date) || !isDate(date)) {
     throw new Error('Birth date missing or formatted incorrectly: ' + date);
   }
@@ -51,10 +62,10 @@ const parseOccupation = (occupation: unknown): string => {
   return occupation;
 };
 
-const validateNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: patientInputs): NewPatient => {
+export const validateNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: patientInputs): NewPatient => {
   const newPatientData: NewPatient = {
     name: parseName(name),
-    dateOfBirth: parseDateOfBirth(dateOfBirth),
+    dateOfBirth: parseDate(dateOfBirth),
     ssn: parseSsn(ssn),
     gender: parseGender(gender),
     occupation: parseOccupation(occupation),
@@ -63,4 +74,81 @@ const validateNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: pati
   return newPatientData;
 };
 
-export default validateNewPatient;
+const parseSpecialist = (specialist: unknown): string => {
+  if (!specialist || !isString(specialist)) {
+    throw new Error('Specialist missing or formatted incorrectly: ' + specialist);
+  }
+  return specialist;
+};
+
+const parseDescription = (description: unknown): string => {
+  if (!description || !isString(description)) {
+    throw new Error('Description missing or formatted incorrectly: ');
+  }
+  return description;
+};
+
+const parseDischarge = (discharge: unknown): Discharge => {
+  if (!discharge) {
+    throw new Error('Discharge missing: ' + discharge);
+  }
+  return discharge as Discharge;
+};
+
+const parseEmployerName = (employerName: unknown): string => {
+  if (!employerName || !isString(employerName)) {
+    throw new Error('Employer name missing or formatted incorrectly: ' + employerName);
+  }
+  return employerName;
+};
+
+const isValidHealthCheckRating = (param: unknown): param is HealthCheckRating => {
+  return Object.values(HealthCheckRating).includes(param as HealthCheckRating);
+};
+
+const parseHealthCheckRating = (healthCheckRating: unknown): HealthCheckRating => {
+  if (!healthCheckRating || !isValidHealthCheckRating(Number(healthCheckRating))) {
+    throw new Error('Health check rating missing or formatted incorrectly: ' + healthCheckRating);
+  }
+  return Number(healthCheckRating);
+};
+
+export const validateNewEntry = ({
+  date,
+  type,
+  specialist,
+  description,
+  discharge,
+  employerName,
+  healthCheckRating
+}: entryInputs): NewEntry => {
+  if (type === 'Hospital') {
+    const newEntry: Omit<HospitalEntry, 'id'> = {
+      date: parseDate(date),
+      type,
+      specialist: parseSpecialist(specialist),
+      description: parseDescription(description),
+      discharge: parseDischarge(discharge),
+    };
+    return newEntry;
+  } else if (type === 'OccupationalHealthcare') {
+    const newEntry: Omit<OccupationalHealthcareEntry, 'id'> = {
+      date: parseDate(date),
+      type,
+      specialist: parseSpecialist(specialist),
+      description: parseDescription(description),
+      employerName: parseEmployerName(employerName),
+    };
+    return newEntry;
+  } else if (type === 'HealthCheck') {
+    const newEntry: Omit<HealthCheckEntry, 'id'> = {
+      date: parseDate(date),
+      type,
+      specialist: parseSpecialist(specialist),
+      description: parseDescription(description),
+      healthCheckRating: parseHealthCheckRating(healthCheckRating)
+    };
+    return newEntry;
+  }
+  throw new Error('Invalid entry type: ' + type);
+};
