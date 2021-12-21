@@ -28,7 +28,7 @@ const isDate = (date: string): boolean => {
 
 const parseDate = (date: unknown): string => {
   if (!date || !isString(date) || !isDate(date)) {
-    throw new Error('Birth date missing or formatted incorrectly: ' + date);
+    throw new Error('Date missing or formatted incorrectly: ' + date + '. Valid format: YYYY-MM-DD');
   }
   return date;
 };
