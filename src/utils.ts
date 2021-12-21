@@ -120,7 +120,8 @@ export const validateNewEntry = ({
   description,
   discharge,
   employerName,
-  healthCheckRating
+  healthCheckRating,
+  sickLeave
 }: entryInputs): NewEntry => {
   if (type === 'Hospital') {
     const newEntry: Omit<HospitalEntry, 'id'> = {
@@ -138,6 +139,7 @@ export const validateNewEntry = ({
       specialist: parseSpecialist(specialist),
       description: parseDescription(description),
       employerName: parseEmployerName(employerName),
+      sickLeave
     };
     return newEntry;
   } else if (type === 'HealthCheck') {

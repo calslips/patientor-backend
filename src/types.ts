@@ -91,4 +91,5 @@ export type entryInputs = {
   discharge?: unknown,
   employerName?: unknown,
   healthCheckRating?: unknown
+  sickLeave?: SickLeave | undefined
 };
