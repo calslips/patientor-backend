@@ -28,7 +28,7 @@ const isDate = (date: string): boolean => {
 
 const parseDate = (date: unknown): string => {
   if (!date || !isString(date) || !isDate(date)) {
-    throw new Error('Date missing or formatted incorrectly: ' + date + '. Valid format: YYYY-MM-DD');
+    throw new Error('Date missing or formatted incorrectly: ' + date + '\nValid format: YYYY-MM-DD');
   }
   return date;
 };
@@ -88,11 +88,19 @@ const parseDescription = (description: unknown): string => {
   return description;
 };
 
-const parseDischarge = (discharge: unknown): Discharge => {
+const parseDischarge = (discharge: Discharge | undefined): Discharge => {
   if (!discharge) {
     throw new Error('Discharge missing: ' + discharge);
   }
-  return discharge as Discharge;
+  if (!discharge.date || !isString(discharge.date) || !isDate(discharge.date)) {
+    throw new Error(
+      'Discharge date missing or formatted incorrectly: ' + discharge.date + '\nValid format: YYYY-MM-DD'
+    );
+  }
+  if (!discharge.criteria || !isString(discharge.criteria)) {
+    throw new Error('Discharge criteria missing or formatted incorrectly: ' + discharge.criteria);
+  }
+  return discharge;
 };
 
 const parseEmployerName = (employerName: unknown): string => {
@@ -118,6 +126,7 @@ export const validateNewEntry = ({
   type,
   specialist,
   description,
+  diagnosisCodes,
   discharge,
   employerName,
   healthCheckRating,
@@ -129,6 +138,7 @@ export const validateNewEntry = ({
       type,
       specialist: parseSpecialist(specialist),
       description: parseDescription(description),
+      diagnosisCodes,
       discharge: parseDischarge(discharge),
     };
     return newEntry;
@@ -138,6 +148,7 @@ export const validateNewEntry = ({
       type,
       specialist: parseSpecialist(specialist),
       description: parseDescription(description),
+      diagnosisCodes,
       employerName: parseEmployerName(employerName),
       sickLeave
     };
@@ -148,6 +159,7 @@ export const validateNewEntry = ({
       type,
       specialist: parseSpecialist(specialist),
       description: parseDescription(description),
+      diagnosisCodes,
       healthCheckRating: parseHealthCheckRating(healthCheckRating)
     };
     return newEntry;
