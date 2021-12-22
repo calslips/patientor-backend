@@ -88,8 +88,9 @@ export type entryInputs = {
   type: unknown,
   specialist: unknown,
   description: unknown,
-  discharge?: unknown,
+  discharge?: Discharge | undefined,
   employerName?: unknown,
   healthCheckRating?: unknown
   sickLeave?: SickLeave | undefined
+  diagnosisCodes?: string[] | undefined
 };
